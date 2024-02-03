@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3mo arnoub</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        #container {
+            position: relative;
+        }
+
+        #rabbit {
+            font-size: 24px;
+            position: absolute;
+            cursor: pointer;
+        }
+
+        #messageContainer {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .message {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .specialMessage {
+            font-size: 20px;
+            text-align: center;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            max-width: 80%;
+            white-space: pre-line;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="rabbit" onclick="moveRabbit()">🐇</div>
+        <div id="messageContainer"></div>
+    </div>
+
+    <script src="https://unpkg.com/gsap@3.9.0/dist/gsap.min.js"></script>
+    <script>
+        let clickCounter = 0;
+
+        function moveRabbit() {
+            let rabbit = document.getElementById("rabbit");
+            let messageContainer = document.getElementById("messageContainer");
+
+            gsap.to(rabbit, {
+                x: () => Math.random() * 10 + "vw",
+                y: () => Math.random() * 10 + "vh",
+                duration: 1,
+                onComplete: showRandomMessage
+            });
+
+            function showRandomMessage() {
+                let phrases = [
+                    "Stop punching me!",
+                    "Ya khara, that hurts!",
+                    "It hurts, but I love you anyway.",
+                    "Is that a love punch?",
+                    "Don't push me away!",
+                    "Ouch!",
+                    "I almost fell because of that."
+                ];
+
+                let randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+                let newMessage = document.createElement("div");
+                newMessage.className = "message";
+                newMessage.textContent = randomPhrase;
+                messageContainer.innerHTML = "";
+                messageContainer.appendChild(newMessage);
+
+                clickCounter++;
+
+                if (clickCounter === 10) {
+                    let specialMessage = document.createElement("div");
+                    specialMessage.className = "specialMessage";
+                    specialMessage.innerHTML = "❤️ Maria, you've been such a good friend and person to me these past months, and I really appreciate having you as a part of my life. You're such an astonishing and amazing person, and I'm looking forward to continuing building our friendship in the future, and maybe just maybe we could be something more.";
+                    specialMessage.innerHTML = specialMessage.innerHTML.replace(/([.,])/g, '<br>$1').replace(/\s+/g, '\u00a0');
+                    messageContainer.innerHTML = specialMessage.innerHTML;
+                    // Hide the rabbit
+                    gsap.set(rabbit, { opacity: 0 });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
